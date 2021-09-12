@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 // import { SigIn } from './src/screens/SigIn';
 import AppLoading from 'expo-app-loading';
 import { NativeBaseProvider, Box } from 'native-base';
+import { NavigationContainer } from '@react-navigation/native';
 import { Routes } from './src/routes';
 import {
   Poppins_400Regular,
@@ -22,10 +23,8 @@ export default function App() {
   } else {
     return (
       <NativeBaseProvider>
-        <View>
-          <StatusBar backgroundColor="#3F8AE0" />
-          <Routes />
-        </View>
+        <StatusBar backgroundColor="#3F8AE0" />
+        <Routes />
       </NativeBaseProvider>
     );
   }
