@@ -1,7 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 // import { SigIn } from './src/screens/SigIn';
+import 'react-native-gesture-handler';
 import AppLoading from 'expo-app-loading';
 import { NativeBaseProvider, Box } from 'native-base';
 import { NavigationContainer } from '@react-navigation/native';
