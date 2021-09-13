@@ -29,21 +29,21 @@ const AppDrawerScreen = () => (
     />
 
     <Drawer.Screen
-      name="Bonus"
+      name="Bonus Disponíveis"
       component={AvailableBonus}
       options={{
         drawerIcon: () => <Icon as={Ionicons} name="cash" />,
       }}
     />
     <Drawer.Screen
-      name="Profile"
+      name="Cadastro"
       component={Profile}
       options={{
         drawerIcon: () => <Icon as={Ionicons} name="people" />,
       }}
     />
     <Drawer.Screen
-      name="Alert Report "
+      name="Relatório de alertas"
       component={alertReport}
       options={{
         drawerIcon: () => <Icon as={Ionicons} name="analytics" />,
