@@ -19,7 +19,7 @@ export function SignIn() {
   const handleClick = () => setShow(!show);
   const navigation = useNavigation();
   function handleSignUp() {
-    navigation.navigate('Profile');
+    navigation.navigate('Cadastro');
   }
   function handleSignIn() {
     navigation.navigate('Home');

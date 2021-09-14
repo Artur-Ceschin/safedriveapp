@@ -10,15 +10,28 @@ import { AvailableBonus } from '../screens/AvailableBonus';
 import { Icon } from 'native-base';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { alertReport } from '../screens/alertReport';
+import { Group } from 'react-native';
 
 const { Navigator, Screen } = createStackNavigator();
+const App = createStackNavigator();
 const Drawer = createDrawerNavigator();
-const AppDrawerScreen = () => (
-  <Drawer.Navigator
+
+const AppRoutes = () => (
+  <App.Navigator
+    initialRouteName="SingIn"
     screenOptions={{
       headerShown: false,
     }}
+  >
+    <App.Screen name="SigIn" component={SignIn} />
+  </App.Navigator>
+);
+const AppDrawerScreen = () => (
+  <Drawer.Navigator
     initialRouteName="Home"
+    screenOptions={{
+      headerShown: false,
+    }}
   >
     <Drawer.Screen
       name="Home"
@@ -54,7 +67,16 @@ const AppDrawerScreen = () => (
 export function Routes() {
   return (
     <NavigationContainer>
-      <AppDrawerScreen />
+      <App.Navigator
+        initialRouteName="SingIn"
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <App.Screen name="SigIn" component={SignIn} />
+        <App.Screen name="Cadastro" component={Profile} />
+        <App.Screen name="Home" component={AppDrawerScreen} />
+      </App.Navigator>
     </NavigationContainer>
   );
 }
