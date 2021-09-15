@@ -7,7 +7,7 @@ import { Stack, Center, Image, Box } from 'native-base';
 export function AvailableBonus() {
   return (
     <>
-      <Header title="Home" />
+      <Header title="Bônus disponíveis" />
       <Stack alignItems="center" mt={10}>
         <Stack
           direction="row"
