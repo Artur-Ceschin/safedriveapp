@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from '../../components/Header';
-import { Text } from 'react-native';
 import cardImage from '../../assets/card.png';
 import api from '../../api';
-import { Stack, Center, Image, Box } from 'native-base';
+import { Stack, Center, Image, Box, Text } from 'native-base';
 import axios from 'axios';
 
 interface Home {
@@ -42,49 +41,30 @@ export function Home() {
             height={150}
             shadow={1}
             _light={{
-              backgroundColor: 'gray.300',
+              backgroundColor: 'gray.100',
             }}
           >
-            <Text>{homeData.driverScore}</Text>
+            <Text fontSize="xl" bold style={{ color: '#3f8ae0' }}>
+              Seus pontos
+            </Text>
+            <Text fontSize="2xl" bold>
+              {homeData.driverScore}
+            </Text>
           </Center>
           <Center
             width="40%"
             height={150}
             shadow={1}
             _light={{
-              backgroundColor: 'gray.300',
+              backgroundColor: 'gray.100',
             }}
           >
-            <Text>{homeData.bonusesAvailable}</Text>
-          </Center>
-        </Stack>
-        <Stack
-          direction="row"
-          space={3}
-          mb={3}
-          alignItems="center"
-          style={{ flexWrap: 'wrap' }}
-          justifyContent="center"
-        >
-          <Center
-            width="40%"
-            height={150}
-            shadow={1}
-            _light={{
-              backgroundColor: 'gray.300',
-            }}
-          >
-            <Text>{homeData.achievements}</Text>
-          </Center>
-          <Center
-            width="40%"
-            height={150}
-            shadow={1}
-            _light={{
-              backgroundColor: 'gray.300',
-            }}
-          >
-            <Text>{homeData.tripsCompleted}</Text>
+            <Text fontSize="xl" bold style={{ color: '#3f8ae0' }}>
+              Bônus Disponíveis
+            </Text>
+            <Text fontSize="2xl" bold>
+              {homeData.bonusesAvailable}
+            </Text>
           </Center>
         </Stack>
         <Stack
@@ -100,20 +80,54 @@ export function Home() {
             height={150}
             shadow={1}
             _light={{
-              backgroundColor: 'gray.300',
+              backgroundColor: 'gray.100',
             }}
           >
-            <Text>{homeData.registeredAlerts}</Text>
+            <Text fontSize="xl" bold style={{ color: '#3f8ae0' }}>
+              Conquistas
+            </Text>
+            <Text fontSize="2xl" bold>
+              {homeData.achievements}
+            </Text>
           </Center>
           <Center
             width="40%"
             height={150}
             shadow={1}
             _light={{
-              backgroundColor: 'gray.300',
+              backgroundColor: 'gray.100',
             }}
           >
-            Teste
+            <Text fontSize="xl" bold style={{ color: '#3f8ae0' }}>
+              Viagens finalizadas
+            </Text>
+            <Text fontSize="2xl" bold>
+              {homeData.tripsCompleted}
+            </Text>
+          </Center>
+        </Stack>
+        <Stack
+          direction="row"
+          space={3}
+          mb={3}
+          alignItems="center"
+          style={{ flexWrap: 'wrap' }}
+          justifyContent="center"
+        >
+          <Center
+            width="40%"
+            height={150}
+            shadow={1}
+            _light={{
+              backgroundColor: 'gray.100',
+            }}
+          >
+            <Text fontSize="xl" bold style={{ color: '#3f8ae0' }}>
+              Registro de alertas
+            </Text>
+            <Text fontSize="2xl" bold>
+              {homeData.registeredAlerts}
+            </Text>
           </Center>
         </Stack>
       </Stack>
