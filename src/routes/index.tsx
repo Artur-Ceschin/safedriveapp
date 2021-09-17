@@ -11,6 +11,7 @@ import { Icon } from 'native-base';
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { alertReport } from '../screens/alertReport';
 import { Group } from 'react-native';
+import { SignUp } from '../screens/SignUp';
 
 const { Navigator, Screen } = createStackNavigator();
 const App = createStackNavigator();
@@ -49,7 +50,7 @@ const AppDrawerScreen = () => (
       }}
     />
     <Drawer.Screen
-      name="Cadastro"
+      name="Perfil"
       component={Profile}
       options={{
         drawerIcon: () => <Icon as={Ionicons} name="people" />,
@@ -74,7 +75,7 @@ export function Routes() {
         }}
       >
         <App.Screen name="SigIn" component={SignIn} />
-        <App.Screen name="Cadastro" component={Profile} />
+        <App.Screen name="Cadastro" component={SignUp} />
         <App.Screen name="Home" component={AppDrawerScreen} />
       </App.Navigator>
     </NavigationContainer>

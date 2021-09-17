@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from '../../components/Header';
 import cardImage from '../../assets/card.png';
-import api from '../../api';
+import { homeApi } from '../../api';
 import { Stack, Center, Image, Box, Text } from 'native-base';
 import axios from 'axios';
 
@@ -17,7 +17,7 @@ export function Home() {
   const [homeData, setHomeData] = useState<Home>({});
 
   useEffect(() => {
-    api
+    homeApi
       .get('/9ac3a29c-a0e8-4107-a540-005bdab6a7ac/statistics')
       .then((response) => {
         setHomeData(response.data);

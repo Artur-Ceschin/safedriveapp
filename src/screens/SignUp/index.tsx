@@ -1,30 +1,25 @@
-import { Center, Input, Stack, Image, Text } from 'native-base';
+import {
+  Box,
+  Center,
+  Input,
+  Stack,
+  Select,
+  CheckIcon,
+  Button,
+  Image,
+  Heading,
+  Text,
+} from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, SafeAreaView } from 'react-native';
 import { Header } from '../../components/Header';
 import profileImg from '../../assets/profile.jpg';
 import { profileApi } from '../../api/index';
 
-interface ProfileData {
-  name?: string;
-  emailAddress?: string;
-  password?: string;
-  phoneNumber?: number;
-  birthDate?: Date;
-  documentNumber?: number;
-  driversLicenseNumber?: number;
-  driverLicenseExpireDate?: number;
-  isProfessionalDriver?: boolean;
-  automotiveInsuranceProvider?: string;
-}
-
-export function Profile() {
-  const [profileData, setProfileData] = useState<ProfileData>({});
-  useEffect(() => {
-    profileApi.get('/9ac3a29c-a0e8-4107-a540-005bdab6a7ac').then((response) => {
-      setProfileData(response.data);
-    });
-  }, []);
+export function SignUp() {
+  let [language, setLanguage] = React.useState('');
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
 
   return (
     <>
@@ -32,37 +27,11 @@ export function Profile() {
       <ScrollView>
         <Stack space={4} w="100%" mt={10} my={10}>
           <Center mx={30}>
-            <Image
-              size={65}
-              resizeMode={'contain'}
-              borderRadius={500}
-              source={profileImg}
-              alt="Profile imgage"
-            />
-            <Text my={3} bold>
-              {profileData.name}
-            </Text>
             <Input
               w="100%"
               size="md"
-              isDisabled={true}
               variant="outline"
-              value={profileData.name}
-              keyboardType="email-address"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
-            />
-            <Input
-              w="100%"
-              mt={3}
-              isDisabled={true}
-              size="md"
-              variant="outline"
-              value={profileData.emailAddress}
+              placeholder="Digite seu nome"
               keyboardType="email-address"
               _light={{
                 placeholderTextColor: 'blueGray.400',
@@ -76,8 +45,21 @@ export function Profile() {
               mt={3}
               size="md"
               variant="outline"
-              isDisabled={true}
-              value={profileData.birthDate}
+              placeholder="Email"
+              keyboardType="email-address"
+              _light={{
+                placeholderTextColor: 'blueGray.400',
+              }}
+              _dark={{
+                placeholderTextColor: 'blueGray.50',
+              }}
+            />
+            <Input
+              w="100%"
+              mt={3}
+              size="md"
+              variant="outline"
+              placeholder="Data de Nascimento"
               keyboardType="phone-pad"
               _light={{
                 placeholderTextColor: 'blueGray.400',
@@ -91,26 +73,6 @@ export function Profile() {
               size="md"
               mt={3}
               variant="outline"
-              isDisabled={true}
-              value={profileData.phoneNumber}
-              placeholder="Telefone"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
-            />
-            <Input
-              w="100%"
-              size="md"
-              mt={3}
-              isDisabled={true}
-              variant="outline"
-              value={
-                'Motorista profissional: ' +
-                (profileData.isProfessionalDriver ? 'Sim' : 'Não')
-              }
               placeholder="Você é um motorista profissional ?"
               _light={{
                 placeholderTextColor: 'blueGray.400',
@@ -119,14 +81,27 @@ export function Profile() {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
+            <Select
+              selectedValue={language}
+              mt={3}
+              minWidth={335}
+              placeholder="Você dirige profissionalmente?"
+              onValueChange={(itemValue) => setLanguage(itemValue)}
+              _selectedItem={{
+                bg: 'cyan.600',
+                endIcon: <CheckIcon size={4} />,
+              }}
+            >
+              <Select.Item label="Sim" value="true" />
+              <Select.Item label="Não" value="false" />
+            </Select>
             <Input
               w="100%"
               size="md"
               mt={3}
               variant="outline"
-              isDisabled={true}
               keyboardType="numbers-and-punctuation"
-              value={profileData.documentNumber}
+              placeholder="CPF"
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -139,9 +114,8 @@ export function Profile() {
               size="md"
               mt={3}
               variant="outline"
-              isDisabled={true}
               keyboardType="numbers-and-punctuation"
-              value={profileData.driversLicenseNumber}
+              placeholder="CNH"
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -153,9 +127,9 @@ export function Profile() {
               w="100%"
               size="md"
               mt={3}
-              isDisabled={true}
               keyboardType="numeric"
-              value={profileData.driverLicenseExpireDate}
+              variant="outline"
+              placeholder="Validade da CNH"
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -167,18 +141,50 @@ export function Profile() {
               w="100%"
               size="md"
               mt={3}
-              isDisabled={true}
               variant="outline"
-              keyboardType="numbers-and-punctuation"
-              value={profileData.automotiveInsuranceProvider}
+              placeholder="Seguradora"
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
               _dark={{
                 placeholderTextColor: 'blueGray.50',
               }}
+            />
+            <Input
+              w="100%"
+              size="md"
+              mt={3}
+              variant="outline"
+              placeholder="Empresa"
+              _light={{
+                placeholderTextColor: 'blueGray.400',
+              }}
+              _dark={{
+                placeholderTextColor: 'blueGray.50',
+              }}
+            />
+
+            <Input
+              mt={3}
+              type={show ? 'text' : 'password'}
+              InputRightElement={
+                <Button
+                  ml={1}
+                  roundedLeft={0}
+                  roundedRight="md"
+                  onPress={handleClick}
+                >
+                  {show ? 'Esconder' : 'Mostrar'}
+                </Button>
+              }
+              placeholder="Senha"
             />
           </Center>
+          <Button.Group mx={30} mt="5" variant="solid" isAttached space={6}>
+            <Button colorScheme="primary" mr={2}>
+              Salvar
+            </Button>
+          </Button.Group>
         </Stack>
       </ScrollView>
     </>

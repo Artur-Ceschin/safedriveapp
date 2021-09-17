@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-const api = axios.create({
+export const homeApi = axios.create({
   baseURL: 'https://safe-driver-api.herokuapp.com/api/Driver',
 });
 
-export default api;
+export const profileApi = axios.create({
+  baseURL: 'https://safe-driver-api.herokuapp.com/api/Driver',
+});
