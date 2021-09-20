@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
+import { Header } from '../../components/Header';
 import Speedometer from '../../Services/Speedometer';
 import MathUtils from '../../Services/MathUtils';
 
@@ -62,6 +63,8 @@ export default function SpeedoMeter() {
   const round = MathUtils.round;
 
   return (
+    <>
+    <Header title="SpeedoMeter" />
     <View style={styles.container}>
       <Text style={styles.text}>Accelerometer: (in Gs where 1 G = 9.81 m s^-2)</Text>
       <Text style={styles.text}>
@@ -89,6 +92,7 @@ export default function SpeedoMeter() {
         </TouchableOpacity>
       </View>
     </View>
+    </>
   );
 }
 
