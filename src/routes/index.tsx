@@ -5,6 +5,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { SignIn } from '../screens/SignIn';
 import { Profile } from '../screens/Profile';
+import SpeedoMeter from '../screens/SpeedoMeter';
 import { Home } from '../screens/Home';
 import { AvailableBonus } from '../screens/AvailableBonus';
 import { Icon } from 'native-base';
@@ -52,6 +53,13 @@ const AppDrawerScreen = () => (
     <Drawer.Screen
       name="Perfil"
       component={Profile}
+      options={{
+        drawerIcon: () => <Icon as={Ionicons} name="people" />,
+      }}
+    />
+    <Drawer.Screen
+      name="Acelerometro"
+      component={SpeedoMeter}
       options={{
         drawerIcon: () => <Icon as={Ionicons} name="people" />,
       }}

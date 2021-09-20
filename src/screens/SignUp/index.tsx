@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, SafeAreaView } from 'react-native';
 import { Header } from '../../components/Header';
 // import profileImg from '../../assets/profile.jpg';
-import uuid from 'react-native-uuid';
+//import uuid from 'react-native-uuid';
 import { profileApi } from '../../api/index';
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -63,13 +63,12 @@ export function SignUp() {
       //   isProfessionalDriver: true,
       //   automotiveInsuranceProvider: 'teste',
       // })
-      const id = String(uuid.v4())
       console.log(`DADOS: ${name.value}`)
       profileApi
         .post(``, {
           data: {
             emailAddress: "email.value",
-            driverUUID: id,
+            driverUUID: "12312",
             password: "password.value",
             name: "name.value",
             phoneNumber: '993299828',
