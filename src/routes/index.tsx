@@ -77,6 +77,7 @@ export function Routes() {
         <App.Screen name="SigIn" component={SignIn} />
         <App.Screen name="Cadastro" component={SignUp} />
         <App.Screen name="Home" component={AppDrawerScreen} />
+        <App.Screen name="Profile" component={Profile} />
       </App.Navigator>
     </NavigationContainer>
   );

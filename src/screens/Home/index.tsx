@@ -15,6 +15,9 @@ interface Home {
 
 export function Home() {
   const [homeData, setHomeData] = useState<Home>({});
+  const [name, setName] = useState({ value: '', error: '' });
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
 
   useEffect(() => {
     homeApi

@@ -13,13 +13,92 @@ import {
 import React, { useEffect, useState } from 'react';
 import { ScrollView, SafeAreaView } from 'react-native';
 import { Header } from '../../components/Header';
-import profileImg from '../../assets/profile.jpg';
+// import profileImg from '../../assets/profile.jpg';
+import uuid from 'react-native-uuid';
 import { profileApi } from '../../api/index';
+import { useNavigation } from '@react-navigation/native';
+import {
+  emailValidator,
+  passwordValidator,
+  nameValidator,
+} from '../../core/utils';
+
+
+interface SignUp {
+  emailAddress: string;
+  password: string;
+  name: string;
+  phoneNumber: string;
+  birthDate: string;
+  documentNumber: string;
+  driversLicenseNumber: string;
+  driverLicenseExpireDate: string;
+  isProfessionalDriver: boolean;
+  automotiveInsuranceProvider: string;
+}
 
 export function SignUp() {
   let [language, setLanguage] = React.useState('');
+  const {navigate} = useNavigation();
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+
+  const [name, setName] = useState({ value: '', error: '' });
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
+
+  const [signUpData, setSignUpData] = useState<SignUp>({} as SignUp);
+
+  const SignUpRequest = () => {
+    try {
+      // setSignUpData({
+      //   emailAddress: email.value,
+      //   password: password.value,
+      //   name: name.value,
+      //   phoneNumber: '993299828',
+      //   birthDate: '18/03/1999',
+      //   documentNumber: '903849023889527',
+      //   driversLicenseNumber: '2193847837573',
+      //   driverLicenseExpireDate: '12/12/2029',
+      //   isProfessionalDriver: true,
+      //   automotiveInsuranceProvider: 'teste',
+      // })
+      const id = String(uuid.v4())
+      console.log(`DADOS: ${name.value}`)
+      profileApi
+        .post(``, {
+          data: {
+            emailAddress: "email.value",
+            driverUUID: id,
+            password: "password.value",
+            name: "name.value",
+            phoneNumber: '993299828',
+            birthDate: '18/03/1999',
+            documentNumber: '903849023889527',
+            driversLicenseNumber: '2193847837573',
+            driverLicenseExpireDate: '12/12/2029',
+            automotiveInsuranceProvider: 'teste'
+          },
+        }).then((response) => console.log(response))
+      navigate('Home');
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const _onSignUpPressed = () => {
+    const nameError = nameValidator(name.value);
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
+
+    if (emailError || passwordError || nameError) {
+      setName({ ...name, error: nameError });
+      setEmail({ ...email, error: emailError });
+      setPassword({ ...password, error: passwordError });
+      return;
+    }
+    
+  };
 
   return (
     <>
@@ -33,6 +112,9 @@ export function SignUp() {
               variant="outline"
               placeholder="Digite seu nome"
               keyboardType="email-address"
+              onChangeText={text => setName({ value: text, error: '' })}
+              error={!!name.error}
+              errorText={name.error}
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -167,6 +249,10 @@ export function SignUp() {
             <Input
               mt={3}
               type={show ? 'text' : 'password'}
+              value={password.value}
+              onChangeText={text => setPassword({ value: text, error: '' })}
+              error={!!password.error}
+              errorText={password.error}
               InputRightElement={
                 <Button
                   ml={1}
@@ -181,7 +267,7 @@ export function SignUp() {
             />
           </Center>
           <Button.Group mx={30} mt="5" variant="solid" isAttached space={6}>
-            <Button colorScheme="primary" mr={2}>
+            <Button colorScheme="primary" onPress={SignUpRequest} mr={2}>
               Salvar
             </Button>
           </Button.Group>

@@ -41,7 +41,7 @@ export function Header({ title, action }: HeaderProps) {
             name="arrow-left"
             size={24}
             color={'white'}
-            onPress={handleGoBack}
+            onPress={() => navigation.navigate('Home')}
           />
         </BorderlessButton>
       )}
