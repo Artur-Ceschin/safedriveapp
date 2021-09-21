@@ -12,6 +12,8 @@ import {
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, SafeAreaView } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Header } from '../../components/Header';
 // import profileImg from '../../assets/profile.jpg';
 //import uuid from 'react-native-uuid';
@@ -61,6 +63,10 @@ export function SignUp() {
     error: '',
   });
 
+  async function saveId(jsonResponse: any){
+    await AsyncStorage.setItem('@safeDriver:id', jsonResponse)
+  }
+
   const SignUpRequest = () => {
     try {
       console.log(
@@ -83,6 +89,8 @@ export function SignUp() {
         })
         .then((response) => {
           console.log(response.data.driverUUID);
+          const jsonResponse = JSON.stringify(response.data.driverUUID)
+          saveId(jsonResponse);
           navigate('Profile', { uuid: response.data.driverUUID });
         });
     } catch (error) {
@@ -161,7 +169,7 @@ export function SignUp() {
               size="md"
               variant="outline"
               onChangeText={(text) =>
-                setBirthDate({ value: new Date(text).toISOString(), error: '' })
+                setBirthDate({ value: new Date(text).toString(), error: '' })
               }
               placeholder="Data de Nascimento"
               keyboardType="phone-pad"
@@ -230,7 +238,7 @@ export function SignUp() {
               placeholder="Validade da CNH"
               onChangeText={(text) =>
                 setDriverLicenseDate({
-                  value: new Date(text).toISOString(),
+                  value: new Date(text).toString(),
                   error: '',
                 })
               }

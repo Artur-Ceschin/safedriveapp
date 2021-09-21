@@ -5,7 +5,7 @@ import { Header } from '../../components/Header';
 import profileImg from '../../assets/profile.jpg';
 import { profileApi } from '../../api/index';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface ProfileData {
   name?: string;
   emailAddress?: string;
@@ -21,6 +21,8 @@ interface ProfileData {
 
 export function Profile(uuid: string) {
   const [profileData, setProfileData] = useState<ProfileData>({});
+  const [id, setId] = useState(''); // <- uuid vindo da response do signUp
+
   console.log(uuid);
 
   const { goBack } = useNavigation();
@@ -38,9 +40,13 @@ export function Profile(uuid: string) {
 
   useFocusEffect(
     useCallback(() => {
+    
       async function getData() {
+        const value = await AsyncStorage.getItem('@safeDriver:id');
+        const valueFormatted = value ? JSON.parse(value) : '';
+
         await profileApi
-          .get('/9ac3a29c-a0e8-4107-a540-005bdab6a7ac')
+          .get(`/${valueFormatted}`)
           .then((response) => {
             setProfileData(response.data);
             console.log(`A resposta foi: ${response.data}`);
