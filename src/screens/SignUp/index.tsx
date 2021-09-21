@@ -1,29 +1,12 @@
-import {
-  Box,
-  Center,
-  Input,
-  Stack,
-  Select,
-  CheckIcon,
-  Button,
-  Image,
-  Heading,
-  Text,
-} from 'native-base';
-import React, { useEffect, useState } from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
+import { Center, Input, Stack, Select, CheckIcon, Button } from 'native-base';
+import React, { useState } from 'react';
+import { ScrollView } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Header } from '../../components/Header';
-// import profileImg from '../../assets/profile.jpg';
-//import uuid from 'react-native-uuid';
+
 import { profileApi } from '../../api/index';
 import { useNavigation } from '@react-navigation/native';
-import {
-  emailValidator,
-  passwordValidator,
-  nameValidator,
-} from '../../core/utils';
 
 interface SignUp {
   emailAddress: string;
@@ -48,23 +31,20 @@ export function SignUp() {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
   const [phoneNumber, setPhoneNumber] = useState({ value: '', error: '' });
-  const [birthDate, setBirthDate] = useState({ value: '', error: '' });
   const [documentNumber, setDocumentNumber] = useState({
     value: '',
     error: '',
   });
   const [driverLicense, setDriverLicense] = useState({ value: '', error: '' });
-  const [driverLicenseDate, setDriverLicenseDate] = useState({
-    value: '',
-    error: '',
-  });
   const [insuranceCompany, setInsuranceCompany] = useState({
     value: '',
     error: '',
   });
 
-  async function saveId(jsonResponse: any){
-    await AsyncStorage.setItem('@safeDriver:id', jsonResponse)
+  const [isProfessionalDriver, setIsProfessionalData] = useState('');
+
+  async function saveId(jsonResponse: any) {
+    await AsyncStorage.setItem('@safeDriver:id', jsonResponse);
   }
 
   const SignUpRequest = () => {
@@ -72,7 +52,7 @@ export function SignUp() {
       console.log(
         `DADOS: ${name.value}, ${email.value}, ${password.value}, ${phoneNumber.value},
           ${documentNumber.value}, ${driverLicense.value},
-        ${insuranceCompany.value}`
+        ${insuranceCompany.value}, ${isProfessionalDriver}`
       );
       profileApi
         .post(``, {
@@ -84,30 +64,17 @@ export function SignUp() {
           documentNumber: documentNumber.value,
           driversLicenseNumber: driverLicense.value,
           driverLicenseExpireDate: '2021-09-20T23:57:10.583Z',
-          isProfessionalDriver: true,
+          isProfessionalDriver: isProfessionalDriver === 'true',
           automotiveInsuranceProvider: insuranceCompany.value,
         })
         .then((response) => {
           console.log(response.data.driverUUID);
-          const jsonResponse = JSON.stringify(response.data.driverUUID)
+          const jsonResponse = JSON.stringify(response.data.driverUUID);
           saveId(jsonResponse);
           navigate('Profile', { uuid: response.data.driverUUID });
         });
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const _onSignUpPressed = () => {
-    const nameError = nameValidator(name.value);
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-
-    if (emailError || passwordError || nameError) {
-      setName({ ...name, error: nameError });
-      setEmail({ ...email, error: emailError });
-      setPassword({ ...password, error: passwordError });
-      return;
     }
   };
 
@@ -163,34 +130,17 @@ export function SignUp() {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
-            <Input
-              w="100%"
-              mt={3}
-              size="md"
-              variant="outline"
-              onChangeText={(text) =>
-                setBirthDate({ value: new Date(text).toString(), error: '' })
-              }
-              placeholder="Data de Nascimento"
-              keyboardType="phone-pad"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
-            />
 
             <Select
-              selectedValue={language}
               mt={3}
               minWidth={335}
               placeholder="Você dirige profissionalmente?"
-              onValueChange={(itemValue) => setLanguage(itemValue)}
               _selectedItem={{
                 bg: 'cyan.600',
                 endIcon: <CheckIcon size={4} />,
               }}
+              onValueChange={(text) => setIsProfessionalData(text)}
+              selectedValue={isProfessionalDriver}
             >
               <Select.Item label="Sim" value="true" />
               <Select.Item label="Não" value="false" />
@@ -229,26 +179,7 @@ export function SignUp() {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
-            <Input
-              w="100%"
-              size="md"
-              mt={3}
-              keyboardType="numeric"
-              variant="outline"
-              placeholder="Validade da CNH"
-              onChangeText={(text) =>
-                setDriverLicenseDate({
-                  value: new Date(text).toString(),
-                  error: '',
-                })
-              }
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
-            />
+
             <Input
               w="100%"
               size="md"

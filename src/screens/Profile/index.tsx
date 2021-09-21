@@ -40,17 +40,14 @@ export function Profile(uuid: string) {
 
   useFocusEffect(
     useCallback(() => {
-    
       async function getData() {
         const value = await AsyncStorage.getItem('@safeDriver:id');
         const valueFormatted = value ? JSON.parse(value) : '';
 
-        await profileApi
-          .get(`/${valueFormatted}`)
-          .then((response) => {
-            setProfileData(response.data);
-            console.log(`A resposta foi: ${response.data}`);
-          });
+        await profileApi.get(`/${valueFormatted}`).then((response) => {
+          setProfileData(response.data);
+          console.log(`A resposta foi: ${response.data}`);
+        });
       }
 
       getData();
@@ -102,21 +99,7 @@ export function Profile(uuid: string) {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
-            <Input
-              w="100%"
-              mt={3}
-              size="md"
-              variant="outline"
-              isDisabled={true}
-              value={profileData.birthDate}
-              keyboardType="phone-pad"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
-            />
+
             <Input
               w="100%"
               size="md"
@@ -180,20 +163,7 @@ export function Profile(uuid: string) {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
-            <Input
-              w="100%"
-              size="md"
-              mt={3}
-              isDisabled={true}
-              keyboardType="numeric"
-              value={profileData.driverLicenseExpireDate}
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
-            />
+
             <Input
               w="100%"
               size="md"
