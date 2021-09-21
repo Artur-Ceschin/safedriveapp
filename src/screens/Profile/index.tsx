@@ -19,33 +19,37 @@ interface ProfileData {
   automotiveInsuranceProvider?: string;
 }
 
-export function Profile() {
+export function Profile(uuid: string) {
   const [profileData, setProfileData] = useState<ProfileData>({});
+  console.log(uuid);
 
-  const {goBack} = useNavigation();
+  const { goBack } = useNavigation();
 
   useEffect(() => {
-    async function getData(){
-      await profileApi.get('/9ac3a29c-a0e8-4107-a540-005bdab6a7ac').then((response) => {
+    async function getData() {
+      await profileApi.get(`/${uuid}`).then((response) => {
         setProfileData(response.data);
-        console.log(`A resposta foi: ${response.data}`)
+        console.log(`A resposta foi: ${response.data}`);
       });
-    } 
-    
+    }
+
     getData();
   }, []);
 
-  useFocusEffect(useCallback(() => {
-    async function getData(){
-      await profileApi.get('/9ac3a29c-a0e8-4107-a540-005bdab6a7ac').then((response) => {
-        setProfileData(response.data);
-        console.log(`A resposta foi: ${response.data}`)
-      });
-    } 
-    
-    getData();
-  },[]));
-  
+  useFocusEffect(
+    useCallback(() => {
+      async function getData() {
+        await profileApi
+          .get('/9ac3a29c-a0e8-4107-a540-005bdab6a7ac')
+          .then((response) => {
+            setProfileData(response.data);
+            console.log(`A resposta foi: ${response.data}`);
+          });
+      }
+
+      getData();
+    }, [])
+  );
 
   return (
     <>

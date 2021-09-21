@@ -23,7 +23,6 @@ import {
   nameValidator,
 } from '../../core/utils';
 
-
 interface SignUp {
   emailAddress: string;
   password: string;
@@ -39,49 +38,55 @@ interface SignUp {
 
 export function SignUp() {
   let [language, setLanguage] = React.useState('');
-  const {navigate} = useNavigation();
+  const { navigate } = useNavigation();
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
   const [name, setName] = useState({ value: '', error: '' });
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
-
-  const [signUpData, setSignUpData] = useState<SignUp>({} as SignUp);
+  const [phoneNumber, setPhoneNumber] = useState({ value: '', error: '' });
+  const [birthDate, setBirthDate] = useState({ value: '', error: '' });
+  const [documentNumber, setDocumentNumber] = useState({
+    value: '',
+    error: '',
+  });
+  const [driverLicense, setDriverLicense] = useState({ value: '', error: '' });
+  const [driverLicenseDate, setDriverLicenseDate] = useState({
+    value: '',
+    error: '',
+  });
+  const [insuranceCompany, setInsuranceCompany] = useState({
+    value: '',
+    error: '',
+  });
 
   const SignUpRequest = () => {
     try {
-      // setSignUpData({
-      //   emailAddress: email.value,
-      //   password: password.value,
-      //   name: name.value,
-      //   phoneNumber: '993299828',
-      //   birthDate: '18/03/1999',
-      //   documentNumber: '903849023889527',
-      //   driversLicenseNumber: '2193847837573',
-      //   driverLicenseExpireDate: '12/12/2029',
-      //   isProfessionalDriver: true,
-      //   automotiveInsuranceProvider: 'teste',
-      // })
-      console.log(`DADOS: ${name.value}`)
+      console.log(
+        `DADOS: ${name.value}, ${email.value}, ${password.value}, ${phoneNumber.value},
+          ${documentNumber.value}, ${driverLicense.value},
+        ${insuranceCompany.value}`
+      );
       profileApi
         .post(``, {
-          data: {
-            emailAddress: "email.value",
-            driverUUID: "12312",
-            password: "password.value",
-            name: "name.value",
-            phoneNumber: '993299828',
-            birthDate: '18/03/1999',
-            documentNumber: '903849023889527',
-            driversLicenseNumber: '2193847837573',
-            driverLicenseExpireDate: '12/12/2029',
-            automotiveInsuranceProvider: 'teste'
-          },
-        }).then((response) => console.log(response))
-      navigate('Home');
+          name: name.value,
+          emailAddress: email.value,
+          password: password.value,
+          phoneNumber: phoneNumber.value,
+          birthDate: '2021-09-20T23:57:10.583Z',
+          documentNumber: documentNumber.value,
+          driversLicenseNumber: driverLicense.value,
+          driverLicenseExpireDate: '2021-09-20T23:57:10.583Z',
+          isProfessionalDriver: true,
+          automotiveInsuranceProvider: insuranceCompany.value,
+        })
+        .then((response) => {
+          console.log(response.data.driverUUID);
+          navigate('Profile', { uuid: response.data.driverUUID });
+        });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -96,7 +101,6 @@ export function SignUp() {
       setPassword({ ...password, error: passwordError });
       return;
     }
-    
   };
 
   return (
@@ -110,8 +114,7 @@ export function SignUp() {
               size="md"
               variant="outline"
               placeholder="Digite seu nome"
-              keyboardType="email-address"
-              onChangeText={text => setName({ value: text, error: '' })}
+              onChangeText={(text) => setName({ value: text, error: '' })}
               error={!!name.error}
               errorText={name.error}
               _light={{
@@ -127,6 +130,7 @@ export function SignUp() {
               size="md"
               variant="outline"
               placeholder="Email"
+              onChangeText={(text) => setEmail({ value: text, error: '' })}
               keyboardType="email-address"
               _light={{
                 placeholderTextColor: 'blueGray.400',
@@ -140,8 +144,10 @@ export function SignUp() {
               mt={3}
               size="md"
               variant="outline"
-              placeholder="Data de Nascimento"
-              keyboardType="phone-pad"
+              onChangeText={(text) =>
+                setPhoneNumber({ value: text, error: '' })
+              }
+              placeholder="Telefone"
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -151,10 +157,14 @@ export function SignUp() {
             />
             <Input
               w="100%"
-              size="md"
               mt={3}
+              size="md"
               variant="outline"
-              placeholder="Você é um motorista profissional ?"
+              onChangeText={(text) =>
+                setBirthDate({ value: new Date(text).toISOString(), error: '' })
+              }
+              placeholder="Data de Nascimento"
+              keyboardType="phone-pad"
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -162,6 +172,7 @@ export function SignUp() {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
+
             <Select
               selectedValue={language}
               mt={3}
@@ -183,6 +194,9 @@ export function SignUp() {
               variant="outline"
               keyboardType="numbers-and-punctuation"
               placeholder="CPF"
+              onChangeText={(text) =>
+                setDocumentNumber({ value: text, error: '' })
+              }
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -197,6 +211,9 @@ export function SignUp() {
               variant="outline"
               keyboardType="numbers-and-punctuation"
               placeholder="CNH"
+              onChangeText={(text) =>
+                setDriverLicense({ value: text, error: '' })
+              }
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -211,6 +228,12 @@ export function SignUp() {
               keyboardType="numeric"
               variant="outline"
               placeholder="Validade da CNH"
+              onChangeText={(text) =>
+                setDriverLicenseDate({
+                  value: new Date(text).toISOString(),
+                  error: '',
+                })
+              }
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -224,19 +247,9 @@ export function SignUp() {
               mt={3}
               variant="outline"
               placeholder="Seguradora"
-              _light={{
-                placeholderTextColor: 'blueGray.400',
-              }}
-              _dark={{
-                placeholderTextColor: 'blueGray.50',
-              }}
-            />
-            <Input
-              w="100%"
-              size="md"
-              mt={3}
-              variant="outline"
-              placeholder="Empresa"
+              onChangeText={(text) =>
+                setInsuranceCompany({ value: text, error: '' })
+              }
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -249,7 +262,7 @@ export function SignUp() {
               mt={3}
               type={show ? 'text' : 'password'}
               value={password.value}
-              onChangeText={text => setPassword({ value: text, error: '' })}
+              onChangeText={(text) => setPassword({ value: text, error: '' })}
               error={!!password.error}
               errorText={password.error}
               InputRightElement={

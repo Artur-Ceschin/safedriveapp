@@ -47,7 +47,9 @@ export function Header({ title, action }: HeaderProps) {
       )}
 
       <Text style={styles.title}>{title}</Text>
-      <Avatar source={profileImg}>GG</Avatar>
+      {router.name === 'SingUp' ? null : (
+        <Avatar source={profileImg}>GG</Avatar>
+      )}
     </LinearGradient>
   );
 }
