@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="./src/assets/safeDriverLogo.png" alt="Trabaho" />
+    <img src="./src/assets/safedriverLogo.png" alt="SafeDriver" />
 </h1>
 # SafeDriver - O app que concede bonus para bons motoristas.
 
@@ -33,3 +33,16 @@ API desenvolvida usando .NET 5 e AspNetCore
 
 - [Repositório GitHub Back-End](https://github.com/G-Leme-C/SafeDriver_API)
 - [Repositório GitHub Front-End](https://github.com/Artur-Ceschin/safedriveapp)
+
+
+#### Como executar
+
+Para testar o projeto execute:
+```
+yarn
+```
+
+Em seguida:
+```
+yarn start
+```
