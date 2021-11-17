@@ -1,6 +1,6 @@
 <h1 align="center">
     <img src="./src/assets/safedriverLogo.png" alt="SafeDriver" />
-</h1>
+/h1>
 # SafeDriver - O app que concede bonus para bons motoristas.
 
 	O app analisa a maneira como um motorista dirige utilizando os sensores do smartphone.
