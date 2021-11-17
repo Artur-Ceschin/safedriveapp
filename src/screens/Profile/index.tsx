@@ -1,11 +1,12 @@
-import { Center, Input, Stack, Image, Text } from 'native-base';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
+import { Center, Input, Stack, Image, Text, Toast, Button } from 'native-base';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, } from 'react-native';
 import { Header } from '../../components/Header';
 import profileImg from '../../assets/profile.jpg';
-import { profileApi } from '../../api/index';
-import { useFocusEffect, useNavigation } from '@react-navigation/core';
+import { driverApi } from '../../api/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/core';
+
 interface ProfileData {
   name?: string;
   emailAddress?: string;
@@ -19,47 +20,49 @@ interface ProfileData {
   automotiveInsuranceProvider?: string;
 }
 
-export function Profile(uuid: string) {
+export function Profile() {
   const [profileData, setProfileData] = useState<ProfileData>({});
-  const [id, setId] = useState(''); // <- uuid vindo da response do signUp
+  const [isLoading, setIsLoading] = useState(false);
 
-  console.log(uuid);
+  const navigation = useNavigation();
 
-  const { goBack } = useNavigation();
-
-  useEffect(() => {
-    async function getData() {
-      await profileApi.get(`/${uuid}`).then((response) => {
-        setProfileData(response.data);
-        console.log(`A resposta foi: ${response.data}`);
+  async function fetchData() {
+    try {
+      const uuid = JSON.parse(await AsyncStorage.getItem('@safeDriver:id') as string);
+      const response = await driverApi.get(`/${uuid}`);
+      setProfileData(response.data);
+    } catch (error: any) {
+      Toast.show({
+        title: 'Houve um problema ao carregar os seus dados',
+        description: error.data?.message || error.message,
+        status: 'error',
       });
     }
+    setIsLoading(false);
+  }
 
-    getData();
+  useEffect(() => {
+    setIsLoading(true);
+    fetchData();
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      async function getData() {
-        const value = await AsyncStorage.getItem('@safeDriver:id');
-        const valueFormatted = value ? JSON.parse(value) : '';
-
-        await profileApi.get(`/${valueFormatted}`).then((response) => {
-          setProfileData(response.data);
-          console.log(`A resposta foi: ${response.data}`);
-        });
-      }
-
-      getData();
-    }, [])
-  );
+  if (isLoading) {
+    return (
+      <>
+        <Header title="Perfil" />
+        <Stack alignItems="center" justifyContent="center" height="80%" mt={10}>
+          <ActivityIndicator size={36} color="black" />
+        </Stack>
+      </>
+    )
+  }
 
   return (
     <>
-      <Header title="Cadastro de Usuário" />
+      <Header title="Perfil" />
       <ScrollView>
         <Stack space={4} w="100%" mt={10} my={10}>
-          <Center mx={30}>
+          <Center mx={4}>
             <Image
               size={65}
               resizeMode={'contain'}
@@ -106,7 +109,7 @@ export function Profile(uuid: string) {
               mt={3}
               variant="outline"
               isDisabled={true}
-              value={profileData.phoneNumber}
+              value={profileData.phoneNumber && ("" + profileData.phoneNumber) || ""}
               placeholder="Telefone"
               _light={{
                 placeholderTextColor: 'blueGray.400',
@@ -140,7 +143,7 @@ export function Profile(uuid: string) {
               variant="outline"
               isDisabled={true}
               keyboardType="numbers-and-punctuation"
-              value={profileData.documentNumber}
+              value={profileData.documentNumber && ("" + profileData.documentNumber) || ""}
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -155,7 +158,7 @@ export function Profile(uuid: string) {
               variant="outline"
               isDisabled={true}
               keyboardType="numbers-and-punctuation"
-              value={profileData.driversLicenseNumber}
+              value={profileData.driversLicenseNumber && ("" + profileData.driversLicenseNumber) || ""}
               _light={{
                 placeholderTextColor: 'blueGray.400',
               }}
@@ -180,6 +183,17 @@ export function Profile(uuid: string) {
               }}
             />
           </Center>
+          <Button
+            onPress={() => {
+              navigation.navigate('Sair');
+            }}
+            colorScheme="primary"
+            size="lg"
+            mx={4}
+            my={8}
+          >
+            SAIR
+          </Button>
         </Stack>
       </ScrollView>
     </>

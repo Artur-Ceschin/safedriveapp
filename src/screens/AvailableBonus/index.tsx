@@ -57,7 +57,7 @@ export function AvailableBonus() {
         <Text style={styles.titleText}>Bonus disponíveis pra você!</Text>
 
         <Stack direction="column" space={3} mb={3} width="100%">
-          {bonusData.map((bonus) => (
+          {bonusData.map((bonus, index) => (
             <Flex
               height="130px"
               direction="column"
@@ -65,7 +65,7 @@ export function AvailableBonus() {
               padding={3}
               rounded="md"
               justify="space-between"
-              key={bonus.bonusId}
+              key={`${bonus.bonusId}-${index}`}
             >
               <Text style={styles.headerText}>{bonus.vendor}</Text>
               <Text style={styles.fontMedium}>{bonus.promotionText}</Text>

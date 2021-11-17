@@ -1,30 +1,66 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Image, ActivityIndicator } from 'react-native';
 import {
   Input,
   Button,
-  Center,
   useToast,
   Link,
   FormControl,
+  Toast,
+  Icon,
 } from 'native-base';
 import safedriveImage from '../../assets/safedriverLogo.png';
 import styles from './styles';
-import { Header } from '../../components/Header';
 import { useNavigation } from '@react-navigation/native';
+import { loginApi } from '../../api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Feather } from '@expo/vector-icons';
 
-export function SignIn() {
-  const [show, setShow] = React.useState(false);
-
-  const handleClick = () => setShow(!show);
+export function SignIn({ updateUserStatusCallback }: { updateUserStatusCallback: () => void }) {
   const navigation = useNavigation();
+  const toast = useToast();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [show, setShow] = React.useState(false);
+  const [email, setEmail] = React.useState();
+  const [password, setPassword] = React.useState();
+  
   function handleSignUp() {
     navigation.navigate('SingUp');
   }
+
   function handleSignIn() {
-    navigation.navigate('Home');
+    setIsLoading(true);
+    loginApi
+      .post(``, {
+        email,
+        senha: password,
+      })
+      .then(async (response) => {
+        const jsonResponse = JSON.stringify(response.data.driverUUID);
+        await saveId(jsonResponse);
+        updateUserStatusCallback();
+        toast.show({
+          title: 'Conta verificada',
+          status: 'success',
+        });
+      })
+      .catch((error) => {
+        Toast.show({
+          title: 'Aconteceu um erro',
+          description: error.data?.message || error.message || "Não sabemos ainda o que houve, tente novamente.",
+          status: 'error',
+        });
+      })
+      .finally(() => setIsLoading(false));
   }
-  const toast = useToast();
+
+  async function saveId(jsonResponse: any) {
+    await AsyncStorage.setItem('@safeDriver:id', jsonResponse);
+  }
+
+  const handleHidePassword = () => setShow(!show);
+
   return (
     <View style={styles.container}>
       <Image source={safedriveImage} style={styles.banner} />
@@ -34,7 +70,7 @@ export function SignIn() {
         >
           Email
         </FormControl.Label>
-        <Input />
+        <Input isDisabled={isLoading} onChangeText={(text) => setEmail(text.trim())}/>
       </FormControl>
       <FormControl mb={5}></FormControl>
       <FormControl mb={5}>
@@ -43,40 +79,49 @@ export function SignIn() {
         >
           Senha
         </FormControl.Label>
-        <Input type="password" />
+        <Input
+          type={show ? 'text' : 'password'}
+          isDisabled={isLoading}
+          onChangeText={(text) => setPassword(text.trim())}
+          InputRightElement={
+            <Icon size="sm" as={<Feather name={show ? 'eye-off' : 'eye'} />} color="#3F8AE0" marginRight={2} onPress={handleHidePassword} />
+          } />
         <Link
-          _text={{ fontSize: 'xs', fontWeight: '700', color: 'cyan.500' }}
+          _text={{ fontSize: 'xs', fontWeight: '700', color: 'cyan.500', marginTop: 2 }}
           alignSelf="flex-end"
           mt={1}
         >
           Esqueceu sua senha ?
         </Link>
       </FormControl>
-      <Button.Group mt="5" variant="solid" isAttached space={6}>
-        <Button
-          variant="outline"
-          colorScheme="primary"
-          mr={2}
-          onPress={() => {
-            handleSignIn();
-            toast.show({
-              title: 'Conta verficada',
-              status: 'success',
-            });
-          }}
-        >
-          Entrar
-        </Button>
-        <Button
-          onPress={handleSignUp}
-          colorScheme="primary"
-          _text={{
-            color: 'white',
-          }}
-        >
-          Cadastrar
-        </Button>
-      </Button.Group>
+      {isLoading && (
+        <View style={{ flex: 1, padding: 16 }}>
+          <ActivityIndicator size={36} color="black" />
+        </View>
+      )}
+      {!isLoading && (
+        <Button.Group mt="5" variant="solid" space={4} alignItems="flex-end" justifyContent="flex-end">
+          <Button
+            onPress={handleSignUp}
+            variant="outline"
+            colorScheme="primary"
+            size="lg"
+            disabled={isLoading}
+          >
+            CADASTRAR
+          </Button>
+          <Button
+            colorScheme="primary"
+            size="lg"
+            disabled={isLoading}
+            onPress={() => {
+              handleSignIn();
+            }}
+          >
+            ENTRAR
+          </Button>
+        </Button.Group>
+      )}
     </View>
   );
 }
