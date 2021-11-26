@@ -61,7 +61,7 @@ export function alertReport() {
 
   useEffect(() => {
     api
-    .get(`https://safe-driver-api.herokuapp.com/api/DriverEvent/9ac3a29c-a0e8-4107-a540-005bdab6a7ac`)
+    .get(`https://safe-driver-api.herokuapp.com/api/DriverEvent/6fff8cff-1cb9-447d-8a5e-18c6ba70b759`)
     .then((response) => {
       setAlertState(response.data)
     })
