@@ -1,11 +1,12 @@
 import { Center, Input, Stack, Image, Text, Toast, Button } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleProp, TextStyle, } from 'react-native';
 import { Header } from '../../components/Header';
 import profileImg from '../../assets/profile.jpg';
 import { driverApi } from '../../api/index';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/core';
+import LabelText from '../../components/LabelText';
 
 interface ProfileData {
   name?: string;
@@ -61,7 +62,7 @@ export function Profile() {
     <>
       <Header title="Perfil" />
       <ScrollView>
-        <Stack space={4} w="100%" mt={10} my={10}>
+        <Stack space={4} w="100%" mt={4}>
           <Center mx={4}>
             <Image
               size={65}
@@ -70,9 +71,12 @@ export function Profile() {
               source={profileImg}
               alt="Profile imgage"
             />
-            <Text my={3} bold>
+
+            <Text my={1} bold>
               {profileData.name}
             </Text>
+
+            <LabelText style={{marginTop: 0}}>Nome</LabelText>
             <Input
               w="100%"
               size="md"
@@ -87,9 +91,10 @@ export function Profile() {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
+
+            <LabelText>Email</LabelText>
             <Input
               w="100%"
-              mt={3}
               isDisabled={true}
               size="md"
               variant="outline"
@@ -103,10 +108,10 @@ export function Profile() {
               }}
             />
 
+            <LabelText>Telefone</LabelText>
             <Input
               w="100%"
               size="md"
-              mt={3}
               variant="outline"
               isDisabled={true}
               value={profileData.phoneNumber && ("" + profileData.phoneNumber) || ""}
@@ -118,14 +123,14 @@ export function Profile() {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
+
+            <LabelText>Motorista Profisional</LabelText>
             <Input
               w="100%"
               size="md"
-              mt={3}
               isDisabled={true}
               variant="outline"
               value={
-                'Motorista profissional: ' +
                 (profileData.isProfessionalDriver ? 'Sim' : 'Não')
               }
               placeholder="Você é um motorista profissional ?"
@@ -136,10 +141,11 @@ export function Profile() {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
+
+            <LabelText>CPF</LabelText>
             <Input
               w="100%"
               size="md"
-              mt={3}
               variant="outline"
               isDisabled={true}
               keyboardType="numbers-and-punctuation"
@@ -151,10 +157,11 @@ export function Profile() {
                 placeholderTextColor: 'blueGray.50',
               }}
             />
+
+            <LabelText>CNH</LabelText>
             <Input
               w="100%"
               size="md"
-              mt={3}
               variant="outline"
               isDisabled={true}
               keyboardType="numbers-and-punctuation"
@@ -167,10 +174,10 @@ export function Profile() {
               }}
             />
 
+            <LabelText>Seguradora</LabelText>
             <Input
               w="100%"
               size="md"
-              mt={3}
               isDisabled={true}
               variant="outline"
               keyboardType="numbers-and-punctuation"
@@ -183,6 +190,7 @@ export function Profile() {
               }}
             />
           </Center>
+
           <Button
             onPress={() => {
               navigation.navigate('Sair');
@@ -190,7 +198,7 @@ export function Profile() {
             colorScheme="primary"
             size="lg"
             mx={4}
-            my={8}
+            my={4}
           >
             SAIR
           </Button>
