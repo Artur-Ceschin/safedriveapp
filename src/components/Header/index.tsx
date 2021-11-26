@@ -1,7 +1,7 @@
 import { BorderlessButton } from 'react-native-gesture-handler';
 import React from 'react';
 import { ReactNode } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { styles } from './style';
@@ -35,6 +35,7 @@ export function Header({ title, leftButtonCallback }: HeaderProps) {
   }
 
   return (
+    <SafeAreaView style={styles.container}>
     <LinearGradient colors={['#3F8AE0', '#3F8AE0']} style={styles.container}>
       <View style={styles.leftIconContainer}>
         {router.name === 'Home' ? (
@@ -63,5 +64,6 @@ export function Header({ title, leftButtonCallback }: HeaderProps) {
         </View>
       )}
     </LinearGradient>
+    </SafeAreaView>
   );
 }

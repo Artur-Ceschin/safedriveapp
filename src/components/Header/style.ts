@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { flex } from 'styled-system';
 
 export const styles = StyleSheet.create({
   container: {
